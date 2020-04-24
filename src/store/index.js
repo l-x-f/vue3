@@ -1,11 +1,22 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+const LOGIN_STATUS = 'login-status'
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
-});
+export default Vuex.createStore({
+  state: {
+    isLogin: false
+  },
+  getters: {
+    isLogin: state => state.isLogin
+  },
+  mutations: {
+    [LOGIN_STATUS](state, pyload) {
+      state.isLogin = pyload
+    }
+  },
+  actions: {
+    setLoginStatus({ commit }, pyload) {
+      commit(LOGIN_STATUS, pyload)
+    }
+  }
+})
