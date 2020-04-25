@@ -9,26 +9,30 @@
         <p class="name">名字： {{ item.teacher }}</p>
       </li>
     </ul>
+    <SaveButton />
   </div>
 </template>
 
 <script>
-import { getCurrentInstance, unref, ref, onMounted } from 'vue'
-import axios from 'axios'
+import { getCurrentInstance, unref, reactive, toRefs, computed } from 'vue'
 
 export default {
   setup() {
     const { ctx } = getCurrentInstance()
     const { query } = unref(ctx.$router.currentRoute)
-    const list = ref([])
-    onMounted(() => {
-      const { isLogin } = ctx.$store.getters
-      axios.get('/app.json', { params: { ...query, isLogin } }).then(res => {
-        list.value = res.data.data
-      })
+    const data = reactive({ list: [] })
+
+    const isLogin = computed(() => ctx.$store.getters)
+    console.log(isLogin)
+
+    ctx.$axios.get('/app.json', { params: { ...query } }).then(res => {
+      data.list = res.data.data
     })
 
-    return { list }
+    return { ...toRefs(data) }
+  },
+  mounted() {
+    console.log(this, 'this')
   }
 }
 </script>

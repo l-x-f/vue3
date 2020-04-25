@@ -1,55 +1,48 @@
 <template>
   <div class="login">
     <div class="loing-form">
-      <h1 class="title">管理系统</h1>
+      <h1 class="title">vue3管理系统</h1>
 
       <div class="form">
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">账号</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <input
-                  v-model="form.account"
-                  class="input is-normal"
-                  type="text"
-                  placeholder="请输入账号"
-                />
-              </div>
+        <form class="layui-form" action="">
+          <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-block">
+              <input
+                v-model="form.account"
+                v-focus
+                type="text"
+                required
+                lay-verify="required"
+                placeholder="请输入账号"
+                autocomplete="off"
+                class="layui-input"
+              />
             </div>
           </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">密码</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <input
-                  v-model="form.password"
-                  class="input is-normal"
-                  type="password"
-                  placeholder="请输入密码"
-                />
-              </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+              <input
+                v-model="form.password"
+                type="password"
+                required
+                lay-verify="required"
+                placeholder="请输入密码"
+                autocomplete="off"
+                class="layui-input"
+              />
             </div>
           </div>
-        </div>
 
-        <div class="field-body login-btn">
-          <div class="field">
-            <div class="control">
-              <button class="button " @click="handleLogin">
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" @click.prevent="handleLogin">
                 登录
               </button>
             </div>
           </div>
-        </div>
-        <p class="tip">账号：admin，密码：12345678</p>
+        </form>
       </div>
     </div>
   </div>
@@ -57,20 +50,24 @@
 
 <script>
 import { reactive, getCurrentInstance } from 'vue'
+import { Message } from '@/utils/message'
 export default {
   name: 'Login',
   setup() {
     const form = reactive({ account: 'admin', password: '12345678' })
     const { ctx } = getCurrentInstance()
+    console.log(getCurrentInstance())
     const handleLogin = () => {
       const { account, password } = form
       if (account === 'admin' && password === '12345678') {
         ctx.$store.dispatch('setLoginStatus', true)
-        ctx.$router.push({
-          path: '/about',
-          query: {
-            id: 'test'
-          }
+        Message('登录成功', () => {
+          ctx.$router.push({
+            path: '/about',
+            query: {
+              id: 'test'
+            }
+          })
         })
       }
     }
@@ -90,7 +87,7 @@ export default {
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.1);
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 20px 30px 20px 0;
@@ -102,29 +99,22 @@ export default {
       color: #fff;
       font-size: 24px;
     }
-    .label {
-      color: #ffff;
-    }
     .form {
       margin-top: 40px;
     }
-    .field:not(:last-child) {
-      margin-bottom: 1.75rem;
-    }
-    .login-btn {
-      margin-top: 34px;
-      .control {
-        padding-left: 26px;
-        text-align: center;
-        .button {
-          width: 100%;
-        }
-      }
-    }
-    .tip {
+    .layui-form-label {
+      width: 40px;
       color: #fff;
-      text-align: center;
-      margin-top: 16px;
+    }
+    .layui-form-item {
+      margin-bottom: 20px;
+    }
+    .layui-input-block {
+      margin-left: 74px;
+      color: #fff;
+    }
+    .layui-btn {
+      width: 100%;
     }
   }
 }

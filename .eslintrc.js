@@ -7,6 +7,10 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   },
+  globals: {
+    layer: 'readonly',
+    layui: 'readonly'
+  },
   rules: {
     quotes: [
       2,
