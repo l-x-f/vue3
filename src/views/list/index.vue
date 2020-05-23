@@ -1,15 +1,14 @@
 <template>
-  <div class="about">
-    <ul class="warp">
-      <li v-for="item in list" :key="item.id" class="item">
-        <div class="avatar-box">
-          <span class="label">头像:</span>
-          <img :src="item.imgurl" class="img" />
-        </div>
-        <p class="name">名字： {{ item.teacher }}</p>
-      </li>
-    </ul>
-    <SaveButton />
+  <div class="list">
+    <div class="layui-card">
+      <ul class="layui-card-body">
+        <li v-for="item in list" :key="item.id" class="item">
+          <div class="layui-card-header">
+            <p class="name">名字： {{ item.teacher }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -21,24 +20,19 @@ export default {
     const { ctx } = getCurrentInstance()
     const { query } = unref(ctx.$router.currentRoute)
     const data = reactive({ list: [] })
-
     const isLogin = computed(() => ctx.$store.getters)
-    console.log(isLogin)
 
     ctx.$axios.get('/app.json', { params: { ...query } }).then(res => {
       data.list = res.data.data
     })
 
-    return { ...toRefs(data) }
-  },
-  mounted() {
-    console.log(this, 'this')
+    return { ...toRefs(data), isLogin }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.warp {
+.layui-card {
   .item {
     margin-top: 10px;
     display: flex;

@@ -63,7 +63,7 @@ export default {
         ctx.$store.dispatch('setLoginStatus', true)
         Message('登录成功', () => {
           ctx.$router.push({
-            path: '/about',
+            path: '/list/index',
             query: {
               id: 'test'
             }
