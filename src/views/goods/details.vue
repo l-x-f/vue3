@@ -8,11 +8,13 @@
 <script>
 import { getCurrentInstance, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 export default {
   setup() {
     const html = ref('')
     const Route = useRoute()
     const Router = useRouter()
+    const Store = useStore()
     const { ctx } = getCurrentInstance()
 
     const {
@@ -26,6 +28,8 @@ export default {
     const back = () => {
       Router.back()
     }
+
+    console.log(Store)
 
     return {
       html,

@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+console.log(Vuex)
 
 const LOGIN_STATUS = 'login-status'
 
