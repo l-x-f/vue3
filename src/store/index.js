@@ -1,29 +1,20 @@
 /* eslint-disable no-useless-catch */
-import Vue from 'vue'
 import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
 
-import { checkLogin, login } from '@/api/login'
+import { login } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router from '@/router'
-import {
-  clearAll,
-  setUserInfo,
-  getUserInfo,
-  setOrgInfo,
-  getOrgInfo
-} from '@/store/storage'
+import { clearAll, setUserInfo, getUserInfo } from '@/store/storage'
 
 const mutationTypes = {
   SET_TOKEN: 'SET_TOKEN',
-  SET_USER_INFO: 'SET_USER_INFO',
-  SET_ORG_INFO: 'SET_ORG_INFO'
+  SET_USER_INFO: 'SET_USER_INFO'
 }
 
 const state = {
   token: getToken(),
-  userInfo: getUserInfo(),
-  orgInfo: getOrgInfo()
+  userInfo: getUserInfo()
 }
 
 const mutations = {
@@ -32,40 +23,14 @@ const mutations = {
   },
   [mutationTypes.SET_USER_INFO]: (state, userInfo) => {
     state.userInfo = userInfo
-  },
-  [mutationTypes.SET_ORG_INFO]: (state, orgInfo) => {
-    state.orgInfo = orgInfo
   }
 }
 
 const actions = {
   // 用户登录
-  async checkLogin({ commit }, userInfo) {
-    try {
-      const { data } = await checkLogin(userInfo)
-      const { token } = data
-      commit(mutationTypes.SET_TOKEN, token)
-      commit(mutationTypes.SET_USER_INFO, data)
-
-      if (data.orgData) {
-        const pyload = {
-          orgData: data.orgData,
-          userInfo
-        }
-        commit(mutationTypes.SET_ORG_INFO, pyload)
-        setOrgInfo(pyload)
-      }
-
-      setToken(token)
-      setUserInfo(data)
-      return data
-    } catch (error) {
-      throw error
-    }
-  },
   async login({ commit }, userInfo) {
     try {
-      const { data } = await login(userInfo)
+      const data = await login(userInfo)
       const { token } = data
       commit(mutationTypes.SET_TOKEN, token)
       commit(mutationTypes.SET_USER_INFO, data)
@@ -78,7 +43,7 @@ const actions = {
   },
 
   // 退出登录
-  async logout({ commit, state }) {
+  async logout({ commit }) {
     try {
       commit(mutationTypes.SET_TOKEN, '')
       removeToken()
@@ -92,11 +57,8 @@ const actions = {
 
 const getters = {
   token: state => state.token,
-  userInfo: state => state.userInfo,
-  orgInfo: state => state.orgInfo
+  userInfo: state => state.userInfo
 }
-
-Vue.use(Vuex)
 
 const store = new Vuex.createStore({
   state,

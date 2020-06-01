@@ -1,17 +1,24 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '@/views/login'
+import Layout from '@/layout'
+import children from './children'
 
 const routes = [
   {
     path: '/',
+    name: 'root',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
     name: 'login',
     component: Login
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '',
+    name: 'home',
+    component: Layout,
+    children: [...children]
   }
 ]
 

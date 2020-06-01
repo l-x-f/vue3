@@ -50,28 +50,31 @@
 
 <script>
 import { reactive, getCurrentInstance } from 'vue'
+import { mapActions } from 'vuex'
 import { Message } from '@/utils/message'
 export default {
   name: 'Login',
   setup() {
     const form = reactive({ account: 'admin', password: '12345678' })
     const { ctx } = getCurrentInstance()
-    console.log(getCurrentInstance())
+    console.log(ctx)
+
     const handleLogin = () => {
-      const { account, password } = form
-      if (account === 'admin' && password === '12345678') {
-        ctx.$store.dispatch('setLoginStatus', true)
+      ctx.login(form).then(() => {
         Message('登录成功', () => {
           ctx.$router.push({
-            path: '/about',
+            path: '/list/index',
             query: {
               id: 'test'
             }
           })
         })
-      }
+      })
     }
     return { form, handleLogin }
+  },
+  methods: {
+    ...mapActions(['login'])
   }
 }
 </script>
